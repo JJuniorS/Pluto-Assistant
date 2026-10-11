@@ -24,7 +24,7 @@ from pluto.history import History
 from pluto.history_ui import HistoryWindow
 from pluto.hotkey import HotkeyListener, parse_hotkey
 from pluto.inserter import paste_text
-from pluto.overlay import ACCENT, GREEN, RED, Overlay
+from pluto.overlay import GREEN, RED, WHITE, Overlay
 from pluto.recorder import SAMPLE_RATE, Recorder, list_input_devices
 from pluto.settings_ui import SettingsWindow
 from pluto.snippets import expand
@@ -138,7 +138,7 @@ class PlutoApp:
             self.overlay.flash(f"Erro no microfone: {exc}", 3000, RED)
             return
         self.state = RECORDING
-        self.overlay.show("Ouvindo…", RED)
+        self.overlay.show("Ouvindo…", RED, blink=True)
 
     def _on_hotkey_up(self) -> None:
         if self.state != RECORDING:
@@ -150,7 +150,7 @@ class PlutoApp:
             self.overlay.hide()
             return
         self.state = PROCESSING
-        self.overlay.show("Transcrevendo…", ACCENT)
+        self.overlay.show("Transcrevendo…", WHITE)
         threading.Thread(
             target=self._process, args=(audio, seconds), name="transcribe", daemon=True
         ).start()
