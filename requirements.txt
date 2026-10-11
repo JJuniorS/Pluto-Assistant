@@ -1,0 +1,12 @@
+faster-whisper>=1.2
+numpy
+sounddevice
+pynput
+pystray
+Pillow
+pyperclip
+# Aceleração por GPU NVIDIA (CUDA 12). Se não tiver GPU NVIDIA, pode remover as duas linhas.
+nvidia-cublas-cu12
+nvidia-cudnn-cu12
+# Testes
+pytest
