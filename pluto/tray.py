@@ -6,23 +6,13 @@ from __future__ import annotations
 from collections.abc import Callable
 
 import pystray
-from PIL import Image, ImageDraw
 
 from pluto import APP_NAME
+from pluto.icon import render_icon
 
 
-def make_icon_image(size: int = 64, enabled: bool = True) -> Image.Image:
-    img = Image.new("RGBA", (size, size), (0, 0, 0, 0))
-    d = ImageDraw.Draw(img)
-    color = (139, 108, 255, 255) if enabled else (120, 120, 130, 255)
-    d.ellipse((2, 2, size - 2, size - 2), fill=color)
-    # Microfone estilizado em branco.
-    cx = size // 2
-    d.rounded_rectangle((cx - 8, 14, cx + 8, 36), radius=8, fill="white")
-    d.arc((cx - 14, 20, cx + 14, 44), start=0, end=180, fill="white", width=4)
-    d.line((cx, 44, cx, 52), fill="white", width=4)
-    d.line((cx - 8, 52, cx + 8, 52), fill="white", width=4)
-    return img
+def make_icon_image(size: int = 64, enabled: bool = True):
+    return render_icon(size, enabled=enabled)
 
 
 class Tray:

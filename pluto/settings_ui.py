@@ -8,6 +8,7 @@ from tkinter import messagebox, ttk
 
 from pluto import APP_NAME
 from pluto.config import Config
+from pluto.icon import apply_window_icon
 from pluto.hotkey import parse_hotkey
 from pluto.transcriber import MODEL_SIZES
 
@@ -24,6 +25,7 @@ class SettingsWindow(tk.Toplevel):
     ):
         super().__init__(master)
         self.title(f"{APP_NAME} — Configurações")
+        apply_window_icon(self)
         self.resizable(False, False)
         self.config_obj = config
         self.on_save = on_save

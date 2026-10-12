@@ -9,12 +9,14 @@ import pyperclip
 
 from pluto import APP_NAME
 from pluto.history import History
+from pluto.icon import apply_window_icon
 
 
 class HistoryWindow(tk.Toplevel):
     def __init__(self, master: tk.Tk, history: History):
         super().__init__(master)
         self.title(f"{APP_NAME} — Histórico")
+        apply_window_icon(self)
         self.geometry("640x420")
         self.history = history
 

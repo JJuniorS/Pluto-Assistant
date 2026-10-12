@@ -28,6 +28,9 @@ def _setup_logging() -> None:
 
 
 def main() -> None:
+    from pluto.icon import ensure_app_id
+
+    ensure_app_id()
     _setup_logging()
     from pluto.app import PlutoApp
 

@@ -22,6 +22,7 @@ from pluto.cleaner import clean
 from pluto.config import Config
 from pluto.history import History
 from pluto.history_ui import HistoryWindow
+from pluto.icon import apply_window_icon, ensure_app_id
 from pluto.hotkey import HotkeyListener, parse_hotkey
 from pluto.inserter import paste_text
 from pluto.obsidian_note import append_daily_note
@@ -44,9 +45,11 @@ class PlutoApp:
         self.enabled = True
         self.state = LOADING
 
+        ensure_app_id()
         self.root = tk.Tk()
         self.root.withdraw()
         self.root.title(APP_NAME)
+        apply_window_icon(self.root)
         self.overlay = Overlay(self.root)
 
         self.recorder = Recorder(self.config.input_device)
