@@ -62,6 +62,19 @@ class SettingsWindow(tk.Toplevel):
         )
         row += 1
 
+        ttk.Label(body, text="Pasta do Obsidian").grid(row=row, column=0, sticky="w", pady=(10, 0))
+        self.obsidian_var = tk.StringVar(value=config.obsidian_dir)
+        ttk.Entry(body, textvariable=self.obsidian_var, width=34).grid(
+            row=row, column=1, sticky="ew", pady=(10, 0)
+        )
+        row += 1
+        ttk.Label(
+            body,
+            text="Nota do dia nesta pasta, uma fala por linha. Vazio cola no cursor.",
+            foreground="#666",
+        ).grid(row=row, column=1, sticky="w")
+        row += 1
+
         ttk.Label(body, text="Processamento").grid(row=row, column=0, sticky="w", pady=(10, 0))
         self.compute_var = tk.StringVar(value=config.device)
         ttk.Combobox(
@@ -131,6 +144,7 @@ class SettingsWindow(tk.Toplevel):
         cfg.input_device = None if device == SYSTEM_DEFAULT else device
         cfg.model_size = self.model_var.get()
         cfg.device = self.compute_var.get()
+        cfg.obsidian_dir = self.obsidian_var.get().strip()
         cfg.fillers = self._lines(self.fillers_text)
         cfg.dictionary = self._lines(self.dictionary_text)
         cfg.snippets = snippets

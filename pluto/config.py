@@ -20,6 +20,7 @@ DEFAULTS: dict[str, Any] = {
     "snippets": {"meu linkedin": "https://www.linkedin.com/in/seu-perfil/"},
     "history_limit": 200,
     "min_audio_seconds": 0.4,
+    "obsidian_dir": "",  # pasta do cofre; vazio = cola no app em foco
 }
 
 
@@ -44,6 +45,7 @@ class Config:
     snippets: dict[str, str]
     history_limit: int
     min_audio_seconds: float
+    obsidian_dir: str
 
     def __init__(self, path: str | os.PathLike[str] | None = None):
         self.path = Path(path) if path else default_config_path()

@@ -24,6 +24,7 @@ from pluto.history import History
 from pluto.history_ui import HistoryWindow
 from pluto.hotkey import HotkeyListener, parse_hotkey
 from pluto.inserter import paste_text
+from pluto.obsidian_note import append_daily_note
 from pluto.overlay import GREEN, RED, WHITE, Overlay
 from pluto.recorder import SAMPLE_RATE, Recorder, list_input_devices
 from pluto.settings_ui import SettingsWindow
@@ -174,11 +175,17 @@ class PlutoApp:
             self.overlay.flash("Não entendi nada.", 1500)
             return
         log.info("(%.1fs) %r -> %r", seconds, raw, text)
+        folder = (self.config.obsidian_dir or "").strip()
         try:
-            paste_text(text)
+            if folder:
+                append_daily_note(folder, text)
+                self.overlay.flash("Anotado.", 1200, GREEN)
+            else:
+                paste_text(text)
         except Exception as exc:  # noqa: BLE001
-            log.exception("Erro ao colar o texto")
-            self.overlay.flash(f"Transcrevi, mas não consegui colar: {exc}", 3000, RED)
+            log.exception("Erro ao entregar o texto")
+            where = "anotar no Obsidian" if folder else "colar"
+            self.overlay.flash(f"Transcrevi, mas não consegui {where}: {exc}", 3000, RED)
         self.history.append(text, raw=raw, seconds=seconds)
 
     def _fail(self, message: str) -> None:
