@@ -12,6 +12,7 @@ from pluto.cleaner import DEFAULT_FILLERS
 
 DEFAULTS: dict[str, Any] = {
     "hotkey": "<ctrl>+<space>",
+    "meeting_hotkey": "<ctrl>+<shift>+m",  # toggle: inicia/para gravação de reunião
     "input_device": None,  # nome do microfone; None = padrão do sistema
     "model_size": "auto",  # auto | tiny | base | small | medium | large-v3 | large-v3-turbo
     "device": "auto",  # auto | cuda | cpu
@@ -21,6 +22,10 @@ DEFAULTS: dict[str, Any] = {
     "history_limit": 200,
     "min_audio_seconds": 0.4,
     "obsidian_dir": "",  # pasta do cofre; vazio = cola no app em foco
+    # Resumo de reunião: OpenAI (gpt-4o-mini, mais barato) ou Anthropic (Haiku).
+    "llm_provider": "openai",  # openai | anthropic
+    "llm_api_key": "",
+    "llm_model": "gpt-4o-mini",  # anthropic: claude-haiku-4-5
 }
 
 
@@ -37,6 +42,7 @@ class Config:
     """Atributos = chaves de DEFAULTS. Chaves desconhecidas no arquivo são ignoradas."""
 
     hotkey: str
+    meeting_hotkey: str
     input_device: str | None
     model_size: str
     device: str
@@ -46,6 +52,9 @@ class Config:
     history_limit: int
     min_audio_seconds: float
     obsidian_dir: str
+    llm_provider: str
+    llm_api_key: str
+    llm_model: str
 
     def __init__(self, path: str | os.PathLike[str] | None = None):
         self.path = Path(path) if path else default_config_path()

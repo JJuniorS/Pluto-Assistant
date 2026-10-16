@@ -6,6 +6,9 @@ from pluto.config import Config, DEFAULTS
 def test_defaults_when_file_missing(tmp_path):
     cfg = Config(tmp_path / "config.json")
     assert cfg.hotkey == DEFAULTS["hotkey"]
+    assert cfg.meeting_hotkey == DEFAULTS["meeting_hotkey"]
+    assert cfg.llm_provider == "openai"
+    assert cfg.llm_model == "gpt-4o-mini"
     assert cfg.fillers == DEFAULTS["fillers"]
     assert cfg.fillers is not DEFAULTS["fillers"]  # deep copy
 

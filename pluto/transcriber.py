@@ -7,6 +7,7 @@ import os
 import site
 import sys
 import sysconfig
+from dataclasses import dataclass
 from pathlib import Path
 
 import numpy as np
@@ -17,6 +18,13 @@ SAMPLE_RATE = 16_000
 GPU_DEFAULT_MODEL = "large-v3-turbo"
 CPU_DEFAULT_MODEL = "small"
 MODEL_SIZES = ["auto", "tiny", "base", "small", "medium", "large-v3", "large-v3-turbo"]
+
+
+@dataclass(frozen=True)
+class Segment:
+    start: float
+    end: float
+    text: str
 
 
 def _register_cuda_dlls() -> None:
@@ -92,8 +100,15 @@ class Transcriber:
     # --- uso -------------------------------------------------------------------
 
     def transcribe(self, audio: np.ndarray, prompt: str | None = None) -> str:
+        return " ".join(s.text for s in self.transcribe_segments(audio, prompt=prompt)).strip()
+
+    def transcribe_segments(
+        self, audio: np.ndarray, prompt: str | None = None
+    ) -> list[Segment]:
         if self.model is None:
             raise RuntimeError("Modelo ainda não carregado.")
+        if audio.size == 0:
+            return []
         segments, _info = self.model.transcribe(
             audio,
             language="pt",
@@ -103,4 +118,9 @@ class Transcriber:
             initial_prompt=prompt or None,
             condition_on_previous_text=False,
         )
-        return " ".join(s.text.strip() for s in segments).strip()
+        out: list[Segment] = []
+        for s in segments:
+            text = s.text.strip()
+            if text:
+                out.append(Segment(float(s.start), float(s.end), text))
+        return out
